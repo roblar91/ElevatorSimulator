@@ -21,7 +21,7 @@ public class StartController {
     }
 
     public void initialize() {
-        var availableFloors = new ImmutableObservableList<Integer>(2, 3, 4, 5, 6, 7, 8, 9, 10);
+        var availableFloors = new ImmutableObservableList<Integer>(2, 3, 4, 5, 6, 7, 8);
         floorsChoice.setItems(availableFloors);
         floorsChoice.setValue(availableFloors.get(0));
     }

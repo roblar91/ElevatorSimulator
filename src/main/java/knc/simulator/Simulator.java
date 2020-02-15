@@ -29,11 +29,14 @@ public class Simulator extends Application {
         stage.setScene(new Scene(root));
     }
 
-    public void createSimulation(Integer value) throws IOException {
+    public void createSimulation(int value) throws IOException {
         System.out.println("Create sim with " + value + " floors");
         var loader = new FXMLLoader(getClass().getResource("/fxml/simulation.fxml"));
-        loader.setController(new SimulationController());
+        var simulationController = new SimulationController();
+        loader.setController(simulationController);
         var root = (Parent) loader.load();
         stage.setScene(new Scene(root));
+
+        simulationController.createFloors(value);
     }
 }
