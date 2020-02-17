@@ -16,7 +16,7 @@ public class ElevatorManager {
     // Requests originating from the control panel inside the elevator
     private final ObservableSet<InternalRequest> internalRequests = new ObservableSetWrapper<>(new HashSet<>());
 
-    private final Elevator elevator = new Elevator();;
+    private final Elevator elevator;
     private final int lowestStorey;
     private final int highestStorey;
 
@@ -31,6 +31,7 @@ public class ElevatorManager {
         if(lowestStorey >= highestStorey)
             throw new IllegalArgumentException("The highest storey must be at least one level above the lowest storey");
 
+        this.elevator = new Elevator(lowestStorey);
         this.lowestStorey = lowestStorey;
         this.highestStorey = highestStorey;
 
