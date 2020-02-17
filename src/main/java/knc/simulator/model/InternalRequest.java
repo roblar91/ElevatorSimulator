@@ -15,9 +15,14 @@ public class InternalRequest {
     public boolean equals(Object obj) {
         if(obj.getClass() == InternalRequest.class) {
             var other = (InternalRequest) obj;
-            return getTargetStorey() == other.getTargetStorey();
+            return targetStorey == other.getTargetStorey();
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return targetStorey;
     }
 }

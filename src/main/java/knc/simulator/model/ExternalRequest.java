@@ -21,10 +21,15 @@ public class ExternalRequest {
     public boolean equals(Object obj) {
         if(obj.getClass() == ExternalRequest.class) {
             var other = (ExternalRequest) obj;
-            return (getSourceStorey() == other.getSourceStorey()) &&
-                    (getTargetDirection() == other.getTargetDirection());
+            return (sourceStorey == other.getSourceStorey()) &&
+                    (targetDirection == other.getTargetDirection());
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return sourceStorey + targetDirection.ordinal();
     }
 }
