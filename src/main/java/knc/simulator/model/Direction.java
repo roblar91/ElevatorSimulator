@@ -1,6 +1,6 @@
 package knc.simulator.model;
 
-public enum Direction {
+enum Direction {
     UP,
     DOWN;
 }

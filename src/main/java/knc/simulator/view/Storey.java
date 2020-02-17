@@ -1,4 +1,4 @@
-package knc.simulator.graphic;
+package knc.simulator.view;
 
 import javafx.scene.control.Control;
 import javafx.scene.layout.Background;

@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import knc.simulator.graphic.Storey;
+import knc.simulator.view.Storey;
 
 public class SimulationController {
     @FXML

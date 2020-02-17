@@ -1,4 +1,4 @@
-package knc.simulator;
+package knc.simulator.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,6 +1,6 @@
 package knc.simulator.model;
 
-public class ExternalRequest {
+class ExternalRequest {
     private final int sourceStorey;
     private final Direction targetDirection;
 

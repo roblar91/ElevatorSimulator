@@ -1,6 +1,6 @@
 package knc.simulator.model;
 
-public class InternalRequest {
+class InternalRequest {
     private final int targetStorey;
 
     public InternalRequest(int targetStorey) {
