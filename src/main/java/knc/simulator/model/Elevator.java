@@ -4,22 +4,23 @@ package knc.simulator.model;
  * An {@link Elevator} contains very limited logic and should be managed through a {@link ElevatorManager}.
  * Each time {@link #update()} is called the elevator will move towards any storey designated through {@link #setTargetStorey(int)}.
  * When the elevator reaches its destination it will enter {@link ElevatorAction#HOLD} status for a certain time.
- * The speed of the elevator and the hold time can be specified through {@link #setSpeed(double)} and {@link #setMaxHoldTime(int)}.
+ * The speed of the elevator and the hold time can be specified through {@link #setCyclesToTraverseStorey(int)} and {@link #setCyclesToHold(int)}.
  */
 class Elevator {
     private ElevatorAction currentAction = ElevatorAction.IDLE;
-    private int maxHoldTime = 100;
-    private int currentHoldTime = 0;
-    private double speed = 0.01;
-    private double currentPosition;
+    private int cyclesToHold = 100;
+    private int currentHoldCycles = 0;
+    private int cyclesToTraverseStorey = 100;
+    private int currentTraversalCycles = 0;
+    private int currentStorey;
     private int targetStorey;
 
     /**
-     * Constructs an {@link Elevator} with the specified starting position.
-     * @param startingPosition The starting position of the elevator
+     * Constructs an {@link Elevator} with the specified starting storey.
+     * @param startingStorey The starting storey of the elevator
      */
-    public Elevator(double startingPosition) {
-        this.currentPosition = startingPosition;
+    public Elevator(int startingStorey) {
+        this.currentStorey = startingStorey;
     }
 
     /**
@@ -38,9 +39,9 @@ class Elevator {
     public void setTargetStorey(int targetStorey) {
         this.targetStorey = targetStorey;
 
-        if(targetStorey > currentPosition) {
+        if(targetStorey > currentStorey) {
             currentAction = ElevatorAction.GOING_UP;
-        } else if(targetStorey < currentPosition) {
+        } else if(targetStorey < currentStorey) {
             currentAction = ElevatorAction.GOING_DOWN;
         } else {
             currentAction = ElevatorAction.IDLE;
@@ -52,37 +53,36 @@ class Elevator {
      * a target storey.
      * @return The number of cycles that the elevator will hold
      */
-    public int getMaxHoldTime() {
-        return maxHoldTime;
+    public int getCyclesToHold() {
+        return cyclesToHold;
     }
 
     /**
      * Sets the number of cycles that the {@link Elevator} will be in {@link ElevatorAction#HOLD} status after reaching
      * a target storey.
-     * @param maxHoldTime The number of cycles that the elevator will hold
+     * @param cyclesToHold The number of cycles that the elevator will hold
      */
-    public void setMaxHoldTime(int maxHoldTime) {
-        this.maxHoldTime = maxHoldTime;
+    public void setCyclesToHold(int cyclesToHold) {
+        this.cyclesToHold = cyclesToHold;
     }
 
     /**
-     * Gets the speed that the {@link Elevator} will move towards its target storey.
-     * The speed is denoted as ratio of storey traversal / cycle, e.g. a speed of 0.1 indicates that it will take
-     * 10 cycles of {@link #update()} to traverse one storey.
-     * @return The speed value
+     * Gets the cycles needed for the {@link Elevator} to traverse one storey.
+     * @return The cycles required
      */
-    public double getSpeed() {
-        return speed;
+    public double getCyclesToTraverseStorey() {
+        return cyclesToTraverseStorey;
     }
 
     /**
-     * Sets the speed that the {@link Elevator} will move towards its target storey.
-     * The speed is denoted as ratio of storey traversal / cycle, e.g. a speed of 0.1 indicates that it will take
-     * 10 cycles of {@link #update()} to traverse one storey.
-     * @param speed The speed value
+     * Sets the cycles needed for the {@link Elevator} to traverse one storey.
+     * @param cyclesToTraverseStorey The cycles required
+     * @throws IllegalArgumentException If cyclesToTraverseStorey < 1
      */
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setCyclesToTraverseStorey(int cyclesToTraverseStorey) throws IllegalArgumentException {
+        if(cyclesToTraverseStorey < 1)
+            throw new IllegalArgumentException("Cycles to traverse a storey has to be >= 1");
+        this.cyclesToTraverseStorey = cyclesToTraverseStorey;
     }
 
     /**
@@ -97,8 +97,8 @@ class Elevator {
      * Gets the current position of this {@link Elevator}.
      * @return The current position
      */
-    public double getCurrentPosition() {
-        return currentPosition;
+    public int getCurrentStorey() {
+        return currentStorey;
     }
 
     /**
@@ -112,41 +112,38 @@ class Elevator {
                 hold();
                 break;
             case GOING_UP:
-                moveUpwards();
-                break;
             case GOING_DOWN:
-                moveDownwards();
+                traverse();
                 break;
         }
     }
 
     private void hold() {
-        if(currentHoldTime++ >= maxHoldTime) {
+        if(++currentHoldCycles >= cyclesToHold) {
             exitHold();
         }
     }
 
-    private void moveUpwards() {
-        currentPosition += speed;
-        if(currentPosition >= targetStorey) {
-            destinationReached();
+    private void traverse() {
+        if(++currentTraversalCycles >= cyclesToTraverseStorey) {
+            storeyChanged();
         }
     }
 
-    private void moveDownwards() {
-        currentPosition -= speed;
-        if(currentPosition <= targetStorey) {
-            destinationReached();
-        }
-    }
+    private void storeyChanged() {
+        currentTraversalCycles = 0;
 
-    private void destinationReached() {
-        currentPosition = targetStorey;
-        startHold();
+        if(currentAction == ElevatorAction.GOING_UP)
+            currentStorey++;
+        else if(currentAction == ElevatorAction.GOING_DOWN)
+            currentStorey--;
+
+        if(currentStorey == targetStorey)
+            startHold();
     }
 
     private void startHold() {
-        currentHoldTime = 0;
+        currentHoldCycles = 0;
         currentAction = ElevatorAction.HOLD;
     }
 
