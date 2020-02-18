@@ -17,9 +17,6 @@ class ElevatorTest {
 
         elevator.setTargetStorey(startingStorey - 1);
         assertEquals(ElevatorAction.GOING_DOWN, elevator.getCurrentAction());
-
-        elevator.setTargetStorey(startingStorey);
-        assertEquals(ElevatorAction.IDLE, elevator.getCurrentAction());
     }
 
     @Test
@@ -55,5 +52,38 @@ class ElevatorTest {
     void testTraversalCyclesBelow1ShouldThrowException() {
         assertThrows(Exception.class, () -> elevator.setCyclesToTraverseStorey(0));
         assertThrows(Exception.class, () -> elevator.setCyclesToTraverseStorey(-5));
+    }
+
+    @Test
+    void testHoldCyclesBelow1ShouldThrowException() {
+        assertThrows(Exception.class, () -> elevator.setCyclesToHold(0));
+        assertThrows(Exception.class, () -> elevator.setCyclesToHold(-8));
+    }
+
+    @Test
+    void testHoldWhenTargetStoreyEqualsCurrent() {
+        elevator.setTargetStorey(startingStorey);
+        assertEquals(ElevatorAction.HOLD, elevator.getCurrentAction());
+    }
+
+    @Test
+    void testHoldAfterTargetStoreyReached() {
+        int cyclesToTraverseOneLevel = 1;
+        int targetStorey = startingStorey + 1;
+        elevator.setCyclesToTraverseStorey(cyclesToTraverseOneLevel);
+        elevator.setTargetStorey(targetStorey);
+        elevator.update();
+
+        assertEquals(ElevatorAction.HOLD, elevator.getCurrentAction());
+    }
+
+    @Test
+    void testIdleAfterHold() {
+        int cyclesToHold = 1;
+        elevator.setCyclesToHold(cyclesToHold);
+        elevator.setTargetStorey(startingStorey);
+        elevator.update();
+
+        assertEquals(ElevatorAction.IDLE, elevator.getCurrentAction());
     }
 }

@@ -44,7 +44,7 @@ class Elevator {
         } else if(targetStorey < currentStorey) {
             currentAction = ElevatorAction.GOING_DOWN;
         } else {
-            currentAction = ElevatorAction.IDLE;
+            startHold();
         }
     }
 
@@ -61,8 +61,11 @@ class Elevator {
      * Sets the number of cycles that the {@link Elevator} will be in {@link ElevatorAction#HOLD} status after reaching
      * a target storey.
      * @param cyclesToHold The number of cycles that the elevator will hold
+     * @throws IllegalArgumentException If cyclesToHold < 1
      */
-    public void setCyclesToHold(int cyclesToHold) {
+    public void setCyclesToHold(int cyclesToHold) throws IllegalArgumentException {
+        if(cyclesToHold < 1)
+            throw new IllegalArgumentException("Cycles to hold must be >= 1");
         this.cyclesToHold = cyclesToHold;
     }
 
@@ -81,7 +84,7 @@ class Elevator {
      */
     public void setCyclesToTraverseStorey(int cyclesToTraverseStorey) throws IllegalArgumentException {
         if(cyclesToTraverseStorey < 1)
-            throw new IllegalArgumentException("Cycles to traverse a storey has to be >= 1");
+            throw new IllegalArgumentException("Cycles to traverse a storey must be >= 1");
         this.cyclesToTraverseStorey = cyclesToTraverseStorey;
     }
 
