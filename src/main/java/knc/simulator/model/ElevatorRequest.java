@@ -1,16 +1,16 @@
 package knc.simulator.model;
 
 /**
- * An {@link InternalRequest} represents a request to travel to a specific storey.
+ * An {@link ElevatorRequest} represents a request to travel to a specific storey.
  */
-class InternalRequest {
+class ElevatorRequest {
     private final int targetStorey;
 
     /**
-     * Constructs an {@link InternalRequest} requesting transportation to the specified storey.
+     * Constructs an {@link ElevatorRequest} requesting transportation to the specified storey.
      * @param targetStorey The requested storey
      */
-    public InternalRequest(int targetStorey) {
+    public ElevatorRequest(int targetStorey) {
         this.targetStorey = targetStorey;
     }
 
@@ -20,8 +20,8 @@ class InternalRequest {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass() == InternalRequest.class) {
-            var other = (InternalRequest) obj;
+        if(obj.getClass() == ElevatorRequest.class) {
+            var other = (ElevatorRequest) obj;
             return targetStorey == other.getTargetStorey();
         }
 
