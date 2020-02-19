@@ -1,5 +1,8 @@
 package knc.simulator.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An {@link Elevator} contains very limited logic and should be managed through a {@link ElevatorManager}.
  * Each time {@link #update()} is called the elevator will move towards any storey designated through {@link #setTargetStorey(int)}.
@@ -7,6 +10,7 @@ package knc.simulator.model;
  * The speed of the elevator and the hold time can be specified through {@link #setCyclesToTraverseStorey(int)} and {@link #setCyclesToHold(int)}.
  */
 class Elevator {
+    private List<ElevatorActionListener> listeners = new ArrayList<>();
     private ElevatorAction currentAction = ElevatorAction.IDLE;
     private int cyclesToHold = 100;
     private int currentHoldCycles = 0;
@@ -41,8 +45,10 @@ class Elevator {
 
         if(targetStorey > currentStorey) {
             currentAction = ElevatorAction.GOING_UP;
+            notifyListeners();
         } else if(targetStorey < currentStorey) {
             currentAction = ElevatorAction.GOING_DOWN;
+            notifyListeners();
         } else {
             startHold();
         }
@@ -66,6 +72,7 @@ class Elevator {
     public void setCyclesToHold(int cyclesToHold) throws IllegalArgumentException {
         if(cyclesToHold < 1)
             throw new IllegalArgumentException("Cycles to hold must be >= 1");
+
         this.cyclesToHold = cyclesToHold;
     }
 
@@ -85,6 +92,7 @@ class Elevator {
     public void setCyclesToTraverseStorey(int cyclesToTraverseStorey) throws IllegalArgumentException {
         if(cyclesToTraverseStorey < 1)
             throw new IllegalArgumentException("Cycles to traverse a storey must be >= 1");
+
         this.cyclesToTraverseStorey = cyclesToTraverseStorey;
     }
 
@@ -121,6 +129,18 @@ class Elevator {
         }
     }
 
+    /**
+     * Registers a listener to be notified each time this {@link Elevator} changes {@link ElevatorAction}.
+     * @param listener The listener to register
+     */
+    public void registerListener(ElevatorActionListener listener) {
+        listeners.add(listener);
+    }
+
+    private void notifyListeners() {
+        listeners.forEach(listener -> listener.onChange(currentAction));
+    }
+
     private void hold() {
         if(++currentHoldCycles >= cyclesToHold) {
             exitHold();
@@ -148,9 +168,11 @@ class Elevator {
     private void startHold() {
         currentHoldCycles = 0;
         currentAction = ElevatorAction.HOLD;
+        notifyListeners();
     }
 
     private void exitHold() {
         currentAction = ElevatorAction.IDLE;
+        notifyListeners();
     }
 }
