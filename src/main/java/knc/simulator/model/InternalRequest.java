@@ -1,8 +1,15 @@
 package knc.simulator.model;
 
+/**
+ * An {@link InternalRequest} represents a request to travel to a specific storey.
+ */
 class InternalRequest {
     private final int targetStorey;
 
+    /**
+     * Constructs an {@link InternalRequest} requesting transportation to the specified storey.
+     * @param targetStorey The requested storey
+     */
     public InternalRequest(int targetStorey) {
         this.targetStorey = targetStorey;
     }

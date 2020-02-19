@@ -69,6 +69,5 @@ public class ElevatorManager {
 
     private void calculateNextTarget() {
         System.out.println("Calculating next target");
-        System.out.println(internalRequests.size());
     }
 }
