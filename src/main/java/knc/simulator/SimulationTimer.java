@@ -12,6 +12,7 @@ public class SimulationTimer extends AnimationTimer {
 
     @Override
     public void handle(long now) {
+        simulationController.progressSimulation();
         simulationController.updateElevatorPosition();
     }
 }

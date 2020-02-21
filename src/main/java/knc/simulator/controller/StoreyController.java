@@ -41,4 +41,8 @@ public class StoreyController {
     public Pane getShaft() {
         return shaft;
     }
+
+    public int getStoreyNumber() {
+        return storeyNumber;
+    }
 }

@@ -50,14 +50,6 @@ public class ElevatorManager implements ElevatorActionListener {
     }
 
     /**
-     * Returns the attached {@link Elevator}.
-     * @return The elevator
-     */
-    public Elevator getElevator() {
-        return elevator;
-    }
-
-    /**
      * Gets the number of requests queued up.
      * @return The number of requests
      */
@@ -84,6 +76,29 @@ public class ElevatorManager implements ElevatorActionListener {
         // Update until next hold
         while(elevator.getCurrentAction() != ElevatorAction.HOLD && elevator.getCurrentAction() != ElevatorAction.IDLE)
             elevator.update();
+    }
+
+    /**
+     * Gets the position of the attached elevator represented as number of storeys from bottom.
+     * Useful when making a graphical representation of the elevator.
+     * @return The number of stories from bottom
+     */
+    public double getElevatorPositionAsStoriesFromBottom() {
+        var storiesFromBottom = elevator.getCurrentStorey() - lowestStorey;
+        var progressToNextStorey = (double) elevator.getCurrentTraversalCycles() / elevator.getCyclesToTraverseStorey();
+
+        if(elevator.getCurrentAction() == ElevatorAction.GOING_DOWN)
+            progressToNextStorey = -progressToNextStorey;
+
+        return storiesFromBottom + progressToNextStorey;
+    }
+
+    /**
+     * Returns the attached {@link Elevator}.
+     * @return The elevator
+     */
+    public Elevator getElevator() {
+        return elevator;
     }
 
     @Override

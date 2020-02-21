@@ -9,12 +9,12 @@ import java.util.List;
  * When the elevator reaches its destination it will enter {@link ElevatorAction#HOLD} status for a certain time.
  * The speed of the elevator and the hold time can be specified through {@link #setCyclesToTraverseStorey(int)} and {@link #setCyclesToHold(int)}.
  */
-class Elevator {
+public class Elevator {
     private List<ElevatorActionListener> listeners = new ArrayList<>();
     private ElevatorAction currentAction = ElevatorAction.IDLE;
-    private int cyclesToHold = 100;
+    private int cyclesToHold = 60;
     private int currentHoldCycles = 0;
-    private int cyclesToTraverseStorey = 100;
+    private int cyclesToTraverseStorey = 60;
     private int currentTraversalCycles = 0;
     private int currentStorey;
     private int targetStorey;
@@ -94,6 +94,22 @@ class Elevator {
             throw new IllegalArgumentException("Cycles to traverse a storey must be >= 1");
 
         this.cyclesToTraverseStorey = cyclesToTraverseStorey;
+    }
+
+    /**
+     * Gets the cycles spent in {@link ElevatorAction#HOLD} state.
+     * @return The current cycle
+     */
+    public int getCurrentHoldCycles() {
+        return currentHoldCycles;
+    }
+
+    /**
+     * Gets the cycles spent in {@link ElevatorAction#GOING_UP} or {@link ElevatorAction#GOING_DOWN} state.
+     * @return The current cycle
+     */
+    public int getCurrentTraversalCycles() {
+        return currentTraversalCycles;
     }
 
     /**

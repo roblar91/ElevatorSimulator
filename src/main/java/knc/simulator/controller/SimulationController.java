@@ -49,7 +49,13 @@ public class SimulationController {
         // Place elevator relative to bottom shaft
         var bottomShaft = storeyControllers[0].getShaft();
         var boundsInScene = bottomShaft.localToScene(bottomShaft.getBoundsInLocal());
-        elevatorController.setTranslate(boundsInScene.getMinX(), boundsInScene.getMinY());
+
+        var offsetY = elevatorManager.getElevatorPositionAsStoriesFromBottom() * bottomShaft.getHeight();
+        elevatorController.setTranslate(boundsInScene.getMinX(), boundsInScene.getMinY() - offsetY);
+    }
+
+    public void progressSimulation() {
+        elevatorManager.updateOneCycle();
     }
 
     private void createSpacer() {
@@ -66,6 +72,11 @@ public class SimulationController {
                 loader.setController(controller);
                 building.getChildren().add(loader.load());
                 storeyControllers[i-1] = controller;
+
+                controller.getCallButton().setOnMouseClicked( e -> {
+                    System.out.println("Clicked on " + controller.getStoreyNumber());
+                    elevatorManager.createElevatorRequest(controller.getStoreyNumber());
+                });
             }
         } catch(Exception e) {
             e.printStackTrace();
