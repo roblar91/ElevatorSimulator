@@ -17,23 +17,23 @@ public class ElevatorSimulator extends Application {
         stage.setTitle("Elevator Simulator");
         stage.show();
 
-        createStart();
-
-        startController.getCreateButton().setOnAction(event -> createSimulation(startController.getStoreyCount()));
+        showStartScene();
     }
 
-    private void createStart() {
+    private void showStartScene() {
         try {
             var loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
             startController = new StartController();
             loader.setController(startController);
             stage.setScene(new Scene(loader.load()));
+
+            startController.getCreateButton().setOnAction(event -> showSimulationScene(startController.getStoreyCount()));
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void createSimulation(int value) {
+    public void showSimulationScene(int value) {
         try {
             var loader = new FXMLLoader(getClass().getResource("/fxml/simulation.fxml"));
             var controller = new SimulationController(value);
