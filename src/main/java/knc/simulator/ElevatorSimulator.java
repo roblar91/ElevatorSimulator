@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import knc.simulator.controller.SimulationController;
 import knc.simulator.controller.StartController;
 
-public class Simulator extends Application {
+public class ElevatorSimulator extends Application {
     private Stage stage;
     private StartController startController;
 
@@ -39,6 +39,7 @@ public class Simulator extends Application {
             var controller = new SimulationController(value);
             loader.setController(controller);
             stage.setScene(new Scene(loader.load()));
+            controller.startSimulation();
         } catch(Exception e) {
             e.printStackTrace();
         }

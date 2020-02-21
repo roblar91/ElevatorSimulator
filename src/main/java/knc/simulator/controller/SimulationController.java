@@ -7,11 +7,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import java.util.ArrayList;
-import java.util.List;
+import knc.simulator.model.ElevatorManager;
 
 public class SimulationController {
+    @FXML
+    private Pane root;
     @FXML
     private ImageView sun;
     @FXML
@@ -19,11 +19,14 @@ public class SimulationController {
     @FXML
     private VBox building;
 
-    private List<StoreyController> storeyControllers = new ArrayList<>();
+    private StoreyController[] storeyControllers;
+    private ElevatorManager elevatorManager;
+    private ElevatorController elevatorController;
     private final int storeys;
 
     public SimulationController(int storeys) {
         this.storeys = storeys;
+        storeyControllers = new StoreyController[storeys];
     }
 
     public void initialize() {
@@ -32,6 +35,11 @@ public class SimulationController {
 
         createSpacer();
         createStoreys();
+    }
+
+    public void startSimulation() {
+        elevatorManager = new ElevatorManager(1, storeys);
+        createElevator();
     }
 
     private void createSpacer() {
@@ -47,11 +55,26 @@ public class SimulationController {
                 var controller = new StoreyController(i);
                 loader.setController(controller);
                 building.getChildren().add(loader.load());
-                storeyControllers.add(controller);
+                storeyControllers[i-1] = controller;
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void createElevator() {
+        try {
+            var loader = new FXMLLoader(getClass().getResource("/fxml/elevator.fxml"));
+            elevatorController = new ElevatorController();
+            loader.setController(elevatorController);
+            root.getChildren().add(loader.load());
+
+            // Place elevator at bottom shaft
+            var bottomShaft = storeyControllers[0].getShaft();
+            var boundsInScene = bottomShaft.localToScene(bottomShaft.getBoundsInLocal());
+            elevatorController.setTranslate(boundsInScene.getMinX(), boundsInScene.getMinY());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -3,10 +3,10 @@ package knc.simulator.controller;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class StoreyController {
-    private final int storeyNumber;
     @FXML
     private ImageView callButton;
     @FXML
@@ -15,7 +15,10 @@ public class StoreyController {
     private ImageView door2;
     @FXML
     private Text storeyText;
+    @FXML
+    private Pane shaft;
 
+    private final int storeyNumber;
     private Image inactiveButtonImage = new Image("images/button_inactive.png");
     private Image activeButtonImage = new Image("images/button_active.png");
     private Image doorImage = new Image("images/door.png");
@@ -33,5 +36,9 @@ public class StoreyController {
 
     public ImageView getCallButton() {
         return callButton;
+    }
+
+    public Pane getShaft() {
+        return shaft;
     }
 }
