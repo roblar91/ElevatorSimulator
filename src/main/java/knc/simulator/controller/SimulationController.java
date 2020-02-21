@@ -8,7 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import knc.simulator.SimulationTimer;
-import knc.simulator.model.ElevatorManager;
+import knc.simulator.model.Elevator;
+import knc.simulator.model.ElevatorRequestManager;
 
 public class SimulationController {
     @FXML
@@ -21,9 +22,10 @@ public class SimulationController {
     private VBox building;
 
     private final int storeys;
-    private StoreyController[] storeyControllers;
-    private ElevatorManager elevatorManager;
+    private Elevator elevator;
+    private ElevatorRequestManager elevatorRequestManager;
     private ElevatorController elevatorController;
+    private StoreyController[] storeyControllers;
     private SimulationTimer simulationTimer;
 
     public SimulationController(int storeys) {
@@ -31,7 +33,8 @@ public class SimulationController {
     }
 
     public void startSimulation() {
-        elevatorManager = new ElevatorManager(1, storeys);
+        elevator = new Elevator(1, storeys);
+        elevatorRequestManager = new ElevatorRequestManager(elevator);
         storeyControllers = new StoreyController[storeys];
         simulationTimer = new SimulationTimer(this);
 
@@ -50,12 +53,12 @@ public class SimulationController {
         var bottomShaft = storeyControllers[0].getShaft();
         var boundsInScene = bottomShaft.localToScene(bottomShaft.getBoundsInLocal());
 
-        var offsetY = elevatorManager.getElevatorPositionAsStoriesFromBottom() * bottomShaft.getHeight();
+        var offsetY = elevator.getElevatorPositionAsStoriesFromBottom() * bottomShaft.getHeight();
         elevatorController.setTranslate(boundsInScene.getMinX(), boundsInScene.getMinY() - offsetY);
     }
 
     public void progressSimulation() {
-        elevatorManager.updateOneCycle();
+        elevator.update();
     }
 
     private void createSpacer() {
@@ -75,7 +78,7 @@ public class SimulationController {
 
                 controller.getCallButton().setOnMouseClicked( e -> {
                     System.out.println("Clicked on " + controller.getStoreyNumber());
-                    elevatorManager.createElevatorRequest(controller.getStoreyNumber());
+                    elevatorRequestManager.createElevatorRequest(controller.getStoreyNumber());
                 });
             }
         } catch(Exception e) {

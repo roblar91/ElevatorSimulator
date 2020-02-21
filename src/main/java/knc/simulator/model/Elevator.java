@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An {@link Elevator} contains very limited logic and should be managed through a {@link ElevatorManager}.
+ * An {@link Elevator} contains very limited logic and should be managed through a {@link ElevatorRequestManager}.
  * Each time {@link #update()} is called the elevator will move towards any storey designated through {@link #setTargetStorey(int)}.
  * When the elevator reaches its destination it will enter {@link ElevatorAction#HOLD} status for a certain time.
  * The speed of the elevator and the hold time can be specified through {@link #setCyclesToTraverseStorey(int)} and {@link #setCyclesToHold(int)}.
  */
 public class Elevator {
+    private final int lowestStorey;
+    private final int highestStorey;
     private List<ElevatorActionListener> listeners = new ArrayList<>();
     private ElevatorAction currentAction = ElevatorAction.IDLE;
     private int cyclesToHold = 60;
@@ -20,11 +22,46 @@ public class Elevator {
     private int targetStorey;
 
     /**
-     * Constructs an {@link Elevator} with the specified starting storey.
+     * Constructs an {@link Elevator} with the specified lowest, highest, and starting storey.
+     * @param lowestStorey The level of the lowest storey
+     * @param highestStorey The level of the highest storey
      * @param startingStorey The starting storey of the elevator
+     * @throws IllegalArgumentException If lowestStorey >=  highestStorey
      */
-    public Elevator(int startingStorey) {
+    public Elevator(int lowestStorey, int highestStorey, int startingStorey) {
+        if(lowestStorey >= highestStorey)
+            throw new IllegalArgumentException("The highest storey must be at least one level above the lowest storey");
+
+        this.lowestStorey = lowestStorey;
+        this.highestStorey = highestStorey;
         this.currentStorey = startingStorey;
+    }
+
+    /**
+     * Constructs an {@link Elevator} with the specified lowest and highest storey.
+     * The starting storey is set to the lowest storey.
+     * @param lowestStorey The level of the lowest storey
+     * @param highestStorey The level of the highest storey
+     * @throws IllegalArgumentException If lowestStorey >=  highestStorey
+     */
+    public Elevator(int lowestStorey, int highestStorey) {
+        this(lowestStorey, highestStorey, lowestStorey);
+    }
+
+    /**
+     * Gets the lowest storey this {@link Elevator} can travel to.
+     * @return The lowest storey
+     */
+    public int getLowestStorey() {
+        return lowestStorey;
+    }
+
+    /**
+     * Gets the highest storey this {@link Elevator} can travel to.
+     * @return The highest storey
+     */
+    public int getHighestStorey() {
+        return highestStorey;
     }
 
     /**
@@ -143,6 +180,35 @@ public class Elevator {
                 traverse();
                 break;
         }
+    }
+
+    /**
+     * The status of this {@link Elevator} is progressed until the next
+     * {@link ElevatorAction#HOLD} or {@link ElevatorAction#IDLE} state is reached.
+     */
+    public void updateUntilNextHold() {
+        // Update until elevator leaves hold
+        while(currentAction == ElevatorAction.HOLD)
+            update();
+
+        // Update until next hold
+        while(currentAction != ElevatorAction.HOLD && currentAction != ElevatorAction.IDLE)
+            update();
+    }
+
+    /**
+     * Gets the position of the this {@link Elevator} represented as number of storeys from bottom.
+     * Useful when making a graphical representation of the elevator.
+     * @return The number of stories from bottom
+     */
+    public double getElevatorPositionAsStoriesFromBottom() {
+        var storiesFromBottom = currentStorey - lowestStorey;
+        var progressToNextStorey = (double) currentTraversalCycles / cyclesToTraverseStorey;
+
+        if(currentAction == ElevatorAction.GOING_DOWN)
+            progressToNextStorey = -progressToNextStorey;
+
+        return storiesFromBottom + progressToNextStorey;
     }
 
     /**
