@@ -21,8 +21,8 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of floors you would like and hit Create to start" />
             <HBox alignment="CENTER" spacing="10.0">
                <children>
-                  <ChoiceBox fx:id="floorsChoice" />
-                  <Button fx:id="createButton" mnemonicParsing="false" onAction="#createSimulation" prefWidth="80.0" text="Create">
+                  <ChoiceBox fx:id="storeysChoice" />
+                  <Button fx:id="createButton" mnemonicParsing="false" prefWidth="80.0" text="Create">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Button>
