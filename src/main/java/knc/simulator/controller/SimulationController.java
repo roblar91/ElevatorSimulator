@@ -10,9 +10,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import knc.simulator.SimulationTimer;
 import knc.simulator.model.Elevator;
+import knc.simulator.model.ElevatorAction;
+import knc.simulator.model.ElevatorActionListener;
 import knc.simulator.model.ElevatorRequestManager;
 
-public class SimulationController {
+public class SimulationController implements ElevatorActionListener {
     @FXML
     private Pane root;
     @FXML
@@ -55,6 +57,7 @@ public class SimulationController {
         createStoreys();
         createElevator();
 
+        elevator.registerListener(this);
         simulationStatus = SimulationStatus.RUNNING;
         simulationTimer.start();
     }
@@ -71,6 +74,12 @@ public class SimulationController {
     public void progressSimulation() {
         elevator.update();
         updateStatusBar();
+    }
+
+    @Override
+    public void onChange(ElevatorAction newElevatorAction) {
+        if(newElevatorAction == ElevatorAction.HOLD)
+            storeyControllers[elevator.getCurrentStorey()-1].setButtonActiveState(false);
     }
 
     private void createSpacer() {
@@ -90,6 +99,7 @@ public class SimulationController {
 
                 controller.getCallButton().setOnMouseClicked( e -> {
                     elevatorRequestManager.createElevatorRequest(controller.getStoreyNumber());
+                    controller.setButtonActiveState(true);
                 });
             }
         } catch(Exception e) {

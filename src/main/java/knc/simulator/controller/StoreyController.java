@@ -45,4 +45,11 @@ public class StoreyController {
     public int getStoreyNumber() {
         return storeyNumber;
     }
+
+    public void setButtonActiveState(boolean isActive) {
+        if(isActive)
+            callButton.setImage(activeButtonImage);
+        else
+            callButton.setImage(inactiveButtonImage);
+    }
 }
