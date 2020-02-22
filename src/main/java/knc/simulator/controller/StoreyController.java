@@ -7,16 +7,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class StoreyController {
-    @FXML
-    private ImageView callButton;
-    @FXML
-    private ImageView door1;
-    @FXML
-    private ImageView door2;
-    @FXML
-    private Text storeyText;
-    @FXML
-    private Pane shaft;
+    @FXML private ImageView callButton;
+    @FXML private ImageView door1;
+    @FXML private ImageView door2;
+    @FXML private Text storeyText;
+    @FXML private Pane shaft;
 
     private final int storeyNumber;
     private Image inactiveButtonImage = new Image("images/button_inactive.png");

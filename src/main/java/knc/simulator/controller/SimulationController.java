@@ -16,22 +16,15 @@ import knc.simulator.model.ElevatorActionListener;
 import knc.simulator.model.ElevatorRequestManager;
 
 public class SimulationController implements ElevatorActionListener {
-    @FXML
-    private Pane root;
-    @FXML
-    private ImageView sun;
-    @FXML
-    private ImageView tree;
-    @FXML
-    private VBox building;
-    @FXML
-    private Text simulationStatusText;
-    @FXML
-    private Text currentActionText;
-    @FXML
-    private Text queueSizeText;
-    @FXML
-    private Text currentTargetText;
+    @FXML private Pane root;
+    @FXML private ImageView sun;
+    @FXML private ImageView tree;
+    @FXML private VBox building;
+    @FXML private Pane keypadContainer;
+    @FXML private Text simulationStatusText;
+    @FXML private Text currentActionText;
+    @FXML private Text queueSizeText;
+    @FXML private Text currentTargetText;
 
     private final int storeys;
     private Elevator elevator;

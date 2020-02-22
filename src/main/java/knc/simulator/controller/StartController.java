@@ -6,10 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 
 public class StartController {
-    @FXML
-    private ChoiceBox<Integer> storeysChoice;
-    @FXML
-    private Button createButton;
+    @FXML private ChoiceBox<Integer> storeysChoice;
+    @FXML private Button createButton;
 
     public void initialize() {
         var availableFloors = new ImmutableObservableList<>(2, 3, 4, 5, 6, 7, 8);
