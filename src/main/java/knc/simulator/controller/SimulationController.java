@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -59,6 +60,12 @@ public class SimulationController implements ElevatorActionListener {
 
         elevator.registerListener(this);
         simulationStatus = SimulationStatus.RUNNING;
+        root.getScene().setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.SPACE) {
+                togglePause();
+            }
+        });
+
         simulationTimer.start();
     }
 
@@ -73,6 +80,7 @@ public class SimulationController implements ElevatorActionListener {
 
     public void progressSimulation() {
         elevator.update();
+        sun.setRotate(sun.getRotate() + 1);
         updateStatusBar();
     }
 
@@ -123,6 +131,19 @@ public class SimulationController implements ElevatorActionListener {
         currentActionText.setText(elevator.getCurrentAction().toString());
         queueSizeText.setText(String.valueOf(elevatorRequestManager.getElevatorRequestsSize()));
         currentTargetText.setText(String.valueOf(elevator.getTargetStorey()));
+    }
+
+    private void togglePause() {
+        if (simulationStatus == SimulationStatus.RUNNING) {
+            simulationStatus = SimulationStatus.PAUSED;
+            simulationTimer.stop();
+        }
+        else {
+            simulationStatus = SimulationStatus.RUNNING;
+            simulationTimer.start();
+        }
+
+        updateStatusBar();
     }
 
     private enum SimulationStatus {

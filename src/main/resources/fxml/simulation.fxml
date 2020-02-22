@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <Pane fx:id="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: linear-gradient(to bottom, lightskyblue, ghostwhite);">
          <children>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="20.0" spacing="10.0" style="-fx-background-color: lightgrey; -fx-border-style: solid; -fx-border-width: 0 0 1 0; -fx-border-color: darkgrey;">
                <children>
@@ -70,8 +70,11 @@
                   </VBox>
                   <VBox fx:id="building" HBox.hgrow="ALWAYS" />
                </children>
+               <padding>
+                  <Insets top="10.0" left="10.0"/>
+               </padding>
             </HBox>
-            <Pane fx:id="ground" prefHeight="50.0" style="-fx-background-color: green;" />
+            <Pane fx:id="ground" prefHeight="50.0" style="-fx-background-color: linear-gradient(to bottom, forestgreen, darkgreen);" />
          </children>
       </VBox>
    </children>

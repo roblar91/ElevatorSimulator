@@ -19,6 +19,7 @@
                </font>
             </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of floors you would like and hit Create to start" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The simulation can be paused with the space key" />
             <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <ChoiceBox fx:id="storeysChoice" />
