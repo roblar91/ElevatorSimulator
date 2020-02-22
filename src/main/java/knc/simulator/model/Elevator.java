@@ -81,10 +81,10 @@ public class Elevator {
         this.targetStorey = targetStorey;
 
         if(targetStorey > currentStorey) {
-            currentAction = ElevatorAction.GOING_UP;
+            currentAction = ElevatorAction.ASCENDING;
             notifyListeners();
         } else if(targetStorey < currentStorey) {
-            currentAction = ElevatorAction.GOING_DOWN;
+            currentAction = ElevatorAction.DESCENDING;
             notifyListeners();
         } else {
             startHold();
@@ -142,7 +142,7 @@ public class Elevator {
     }
 
     /**
-     * Gets the cycles spent in {@link ElevatorAction#GOING_UP} or {@link ElevatorAction#GOING_DOWN} state.
+     * Gets the cycles spent in {@link ElevatorAction#ASCENDING} or {@link ElevatorAction#DESCENDING} state.
      * @return The current cycle
      */
     public int getCurrentTraversalCycles() {
@@ -175,8 +175,8 @@ public class Elevator {
             case HOLD:
                 hold();
                 break;
-            case GOING_UP:
-            case GOING_DOWN:
+            case ASCENDING:
+            case DESCENDING:
                 traverse();
                 break;
         }
@@ -205,7 +205,7 @@ public class Elevator {
         var storiesFromBottom = currentStorey - lowestStorey;
         var progressToNextStorey = (double) currentTraversalCycles / cyclesToTraverseStorey;
 
-        if(currentAction == ElevatorAction.GOING_DOWN)
+        if(currentAction == ElevatorAction.DESCENDING)
             progressToNextStorey = -progressToNextStorey;
 
         return storiesFromBottom + progressToNextStorey;
@@ -238,9 +238,9 @@ public class Elevator {
     private void storeyChanged() {
         currentTraversalCycles = 0;
 
-        if(currentAction == ElevatorAction.GOING_UP)
+        if(currentAction == ElevatorAction.ASCENDING)
             currentStorey++;
-        else if(currentAction == ElevatorAction.GOING_DOWN)
+        else if(currentAction == ElevatorAction.DESCENDING)
             currentStorey--;
 
         if(currentStorey == targetStorey)

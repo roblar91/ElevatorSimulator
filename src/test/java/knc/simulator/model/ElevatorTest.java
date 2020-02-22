@@ -30,10 +30,10 @@ class ElevatorTest {
         assertEquals(ElevatorAction.IDLE, elevator.getCurrentAction());
 
         elevator.setTargetStorey(defaultStartingStorey + 1);
-        assertEquals(ElevatorAction.GOING_UP, elevator.getCurrentAction());
+        assertEquals(ElevatorAction.ASCENDING, elevator.getCurrentAction());
 
         elevator.setTargetStorey(defaultStartingStorey - 1);
-        assertEquals(ElevatorAction.GOING_DOWN, elevator.getCurrentAction());
+        assertEquals(ElevatorAction.DESCENDING, elevator.getCurrentAction());
     }
 
     @Test

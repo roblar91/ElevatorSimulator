@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import knc.simulator.SimulationTimer;
 import knc.simulator.model.Elevator;
 import knc.simulator.model.ElevatorRequestManager;
@@ -20,6 +21,14 @@ public class SimulationController {
     private ImageView tree;
     @FXML
     private VBox building;
+    @FXML
+    private Text simulationStatusText;
+    @FXML
+    private Text currentActionText;
+    @FXML
+    private Text queueSizeText;
+    @FXML
+    private Text currentTargetText;
 
     private final int storeys;
     private Elevator elevator;
@@ -27,6 +36,7 @@ public class SimulationController {
     private ElevatorController elevatorController;
     private StoreyController[] storeyControllers;
     private SimulationTimer simulationTimer;
+    private SimulationStatus simulationStatus;
 
     public SimulationController(int storeys) {
         this.storeys = storeys;
@@ -45,6 +55,7 @@ public class SimulationController {
         createStoreys();
         createElevator();
 
+        simulationStatus = SimulationStatus.RUNNING;
         simulationTimer.start();
     }
 
@@ -59,6 +70,7 @@ public class SimulationController {
 
     public void progressSimulation() {
         elevator.update();
+        updateStatusBar();
     }
 
     private void createSpacer() {
@@ -77,7 +89,6 @@ public class SimulationController {
                 storeyControllers[i-1] = controller;
 
                 controller.getCallButton().setOnMouseClicked( e -> {
-                    System.out.println("Clicked on " + controller.getStoreyNumber());
                     elevatorRequestManager.createElevatorRequest(controller.getStoreyNumber());
                 });
             }
@@ -95,5 +106,17 @@ public class SimulationController {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateStatusBar() {
+        simulationStatusText.setText(simulationStatus.toString());
+        currentActionText.setText(elevator.getCurrentAction().toString());
+        queueSizeText.setText(String.valueOf(elevatorRequestManager.getElevatorRequestsSize()));
+        currentTargetText.setText(String.valueOf(elevator.getTargetStorey()));
+    }
+
+    private enum SimulationStatus {
+        RUNNING,
+        PAUSED;
     }
 }

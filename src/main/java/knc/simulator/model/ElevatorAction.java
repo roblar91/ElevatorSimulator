@@ -1,8 +1,8 @@
 package knc.simulator.model;
 
-enum ElevatorAction {
+public enum ElevatorAction {
     IDLE,
     HOLD,
-    GOING_UP,
-    GOING_DOWN;
+    ASCENDING,
+    DESCENDING;
 }
