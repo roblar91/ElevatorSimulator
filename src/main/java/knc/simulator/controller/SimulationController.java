@@ -79,8 +79,12 @@ public class SimulationController implements ElevatorActionListener {
 
     @Override
     public void onChange(ElevatorAction newElevatorAction) {
-        if(newElevatorAction == ElevatorAction.HOLD)
+        if(newElevatorAction == ElevatorAction.HOLD) {
             storeyControllers[elevator.getCurrentStorey()-1].setButtonActiveState(false);
+            elevatorController.setDoorVisibility(true);
+        } else {
+            elevatorController.setDoorVisibility(false);
+        }
     }
 
     private void createSpacer() {

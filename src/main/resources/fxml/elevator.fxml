@@ -5,6 +5,9 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="elevatorPane" layoutX="-74.0" layoutY="-71.0" prefHeight="70.0" prefWidth="60.0" style="-fx-background-color: slategrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+      <AnchorPane fx:id="elevatorPane" layoutX="-74.0" layoutY="-71.0" prefHeight="70.0" prefWidth="60.0" style="-fx-background-color: slategrey; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: darkslategrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <Pane fx:id="door" prefHeight="55.0" prefWidth="40.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, yellow, lightgoldenrodyellow);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+         </children></AnchorPane>
    </children>
 </AnchorPane>
